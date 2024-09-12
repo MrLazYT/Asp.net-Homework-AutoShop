@@ -1,0 +1,79 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model CarsViewModel
+
+<div class="container d-flex">
+    <div class="nav flex-column text-start">
+        @foreach(Category category in Model.Categories)
+        {
+            @if (ViewBag.SelectedCategoryId == category.Id)
+            {
+                <a class="nav-link disabled" asp-controller="Cars" asp-action="Index" asp-route-categoryId="@category.Id">@category</a>
+            }
+            else
+            {
+                <a class="nav-link" asp-controller="Cars" asp-action="Index" asp-route-categoryId="@category.Id">@category</a>
+            }
+        }
+    </div>
+
+    <div class="container">
+        <div class="container m-1">
+            <span>Sort By:</span>
+
+            <div class="btn-group">
+                @for(int i = 0; i < Model.CarsProperties.Count; i++)
+                {
+                    @if(ViewBag.CarPropertyId == i && !ViewBag.IsDescending)
+                    {
+                        <a class="btn btn-secondary disabled" asp-controller="Cars" asp-action="Index" asp-route-propertyId="@i">@Model.CarsProperties[i]</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-secondary" asp-controller="Cars" asp-action="Index" asp-route-propertyId="@i">@Model.CarsProperties[i]</a>
+                    }
+                }
+
+                @for(int i = 0; i < Model.CarsProperties.Count; i++)
+                {
+                    @if (ViewBag.CarPropertyId == i && ViewBag.IsDescending)
+                        {
+                        <a class="btn btn-secondary disabled" asp-controller="Cars" asp-action="Index" asp-route-propertyId="@i" asp-route-isDescending="true">@Model.CarsProperties[i] descending</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-secondary" asp-controller="Cars" asp-action="Index" asp-route-propertyId="@i" asp-route-isDescending="true">@Model.CarsProperties[i] descending</a>
+                    }
+                }
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <a class="btn btn-primary m-1" asp-controller="Cars" asp-action="Add">Add Car</a>
+        </div>
+
+        <div class="d-flex flex-wrap">
+            @foreach(Car car in Model.Cars)
+            {
+                <div class="card m-1" style="width: 17rem">
+                    <img />
+
+                    <div class="card-body">
+                        <h5 class="card-title">@car.Model</h5>
+                        <p class="card-text">@car.Color</p>
+                        <p class="card-text">@car.Year</p>
+                        <p class="card-text text-primary">@car.Category</p>
+
+                        <div class="btn-group">
+                            <a class="btn btn-primary" asp-controller="Cars" asp-action="Edit" asp-route-id="@car.Id">Edit</a>
+                            <a class="btn btn-danger" asp-controller="Cars" asp-action="Delete" asp-route-id="@car.Id">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

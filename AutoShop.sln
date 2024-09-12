@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35004.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutoShop", "AutoShop\AutoShop.csproj", "{2F78D648-E8A8-4BB8-836E-33712903E635}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{DEC9A085-A4EE-48F8-85C8-AE21593D0474}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2F78D648-E8A8-4BB8-836E-33712903E635}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F78D648-E8A8-4BB8-836E-33712903E635}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F78D648-E8A8-4BB8-836E-33712903E635}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F78D648-E8A8-4BB8-836E-33712903E635}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEC9A085-A4EE-48F8-85C8-AE21593D0474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC9A085-A4EE-48F8-85C8-AE21593D0474}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEC9A085-A4EE-48F8-85C8-AE21593D0474}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEC9A085-A4EE-48F8-85C8-AE21593D0474}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A0C7D66E-B008-47F9-9001-9635FC7A9372}
+	EndGlobalSection
+EndGlobal

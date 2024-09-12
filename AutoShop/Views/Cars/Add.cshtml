@@ -1,0 +1,45 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model CarViewModel
+
+<h1>Adding Car</h1>
+
+<form method="post">
+    <div class="text-danger" asp-validation-summary="All"></div>
+
+    <div class="m-1">
+        <label class="form-label" asp-for="Car.Model">Model</label>
+        <input class="form-control" asp-for="Car.Model" />
+        <span class="text-danger" asp-validation-for="Car.Model"></span>
+    </div>
+
+    <div class="m-1">
+        <label class="form-label" asp-for="Car.Color">Color</label>
+        <input class="form-control" asp-for="Car.Color" />
+        <span class="text-danger" asp-validation-for="Car.Color"></span>
+    </div>
+
+    <div class="m-1">
+        <label class="form-label" asp-for="Car.Year">Year</label>
+        <input class="form-control" type="number" asp-for="Car.Year" />
+        <span class="text-danger" asp-validation-for="Car.Year"></span>
+    </div>
+
+    <div class="m-1">
+        <label class="form-label" asp-for="Car.CategoryId">Category</label>
+        <select class="form-select" asp-for="Car.CategoryId">
+            @foreach(Category category in Model.Categories)
+            {
+                <option value="@category.Id">@category</option>
+            }
+        </select>
+        <span class="text-danger" asp-validation-for="Car.CategoryId"></span>
+    </div>
+
+    <div class="m-1">
+        <button class="btn btn-primary">Add</button>
+    </div>
+</form>
