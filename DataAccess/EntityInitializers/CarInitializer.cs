@@ -1,11 +1,11 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DataAccess.Helpers
+namespace DataAccess.EntityInitializers
 {
-	public class CarInitializer : DbInitializer<Car>
+    public class CarInitializer : EntityInitializer<Car>
 	{
-		public static void SeedData(EntityTypeBuilder<Car> builder)
+        public static void SeedData(EntityTypeBuilder<Car> builder)
 		{
 			builder.HasData(new List<Car>()
 			{

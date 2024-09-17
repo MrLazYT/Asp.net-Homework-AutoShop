@@ -1,9 +1,9 @@
-﻿using DataAccess.Models;
+﻿using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DataAccess.Helpers
+namespace DataAccess.EntityInitializers
 {
-	public class CategoryInitializer : DbInitializer<Category>
+	public class CategoryInitializer : EntityInitializer<Category>
 	{
 		public static void SeedData(EntityTypeBuilder<Category> builder)
 		{

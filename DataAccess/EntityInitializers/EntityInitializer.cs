@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DataAccess.Helpers
+namespace DataAccess.EntityInitializers
 {
-	public abstract class DbInitializer<T> where T : class
+	public interface EntityInitializer<T> where T : class
 	{
 		public static void SeedData(EntityTypeBuilder<T> builder) { }
 	}

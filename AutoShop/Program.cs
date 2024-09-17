@@ -1,4 +1,6 @@
 using DataAccess.Data;
+using FluentValidation.AspNetCore;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoShop
@@ -11,6 +13,9 @@ namespace AutoShop
 
 			builder.Services.AddDbContext<CarContext>(
 				options => options.UseSqlServer(builder.Configuration.GetConnectionString("CarContext")));
+
+			builder.Services.AddFluentValidationAutoValidation();
+			builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();

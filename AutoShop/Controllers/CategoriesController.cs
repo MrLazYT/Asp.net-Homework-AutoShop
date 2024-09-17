@@ -1,17 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using DataAccess.Data;
-using DataAccess.Models;
+using DataAccess.Entities;
+using AutoShop.Validators;
+using FluentValidation.Results;
+using FluentValidation.AspNetCore;
 
 namespace AutoShop.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly CarContext _context;
+        private readonly CategoryValidator _validator;
 
         public CategoriesController(CarContext context)
         {
             _context = context;
+            _validator = new CategoryValidator();
         }
 
         // GET: Categories
@@ -51,7 +56,10 @@ namespace AutoShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description")] Category category)
         {
-            if (ModelState.IsValid)
+            ValidationResult validationResult = _validator.Validate(category);
+            validationResult.AddToModelState(ModelState);
+            
+            if (ModelState.IsValid && validationResult.IsValid)
             {
                 _context.Add(category);
                 await _context.SaveChangesAsync();
@@ -88,7 +96,10 @@ namespace AutoShop.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            ValidationResult validationResult = _validator.Validate(category);
+            validationResult.AddToModelState(ModelState);
+
+            if (ModelState.IsValid && validationResult.IsValid)
             {
                 try
                 {

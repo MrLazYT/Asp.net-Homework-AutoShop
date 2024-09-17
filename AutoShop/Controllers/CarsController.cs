@@ -1,6 +1,6 @@
-﻿using AutoShop.Helpers;
+﻿using AutoShop.Validators;
 using DataAccess.Data;
-using DataAccess.Models;
+using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
@@ -11,7 +11,7 @@ namespace AutoShop.Controllers
 		public readonly CarContext _context;
 		public readonly CarViewModel _carViewModel;
 		public readonly CarsViewModel _carsViewModel;
-        public readonly Validator _validator;
+        public readonly CarModelValidator _validator;
 
         public CarsController(CarContext context)
 		{
@@ -28,10 +28,10 @@ namespace AutoShop.Controllers
             };
 
             categories.AddRange(_context.GetCategoryList());
-			
-			_carViewModel = new CarViewModel(new Car(), categories);
+
 			_carsViewModel = new CarsViewModel(cars, categories);
-			_validator = new Validator(_context, ModelState);
+			_carViewModel = new CarViewModel(new Car(), categories);
+			_validator = new CarModelValidator(_context, ModelState);
 		}
 
         [HttpGet]
@@ -150,7 +150,7 @@ namespace AutoShop.Controllers
             return View(_carViewModel);
         }
 
-        public void AddModelErrors(bool areCarFieldsValid, bool areFieldsChanged)
+        private void AddModelErrors(bool areCarFieldsValid, bool areFieldsChanged)
         {
             if (!areCarFieldsValid)
             {

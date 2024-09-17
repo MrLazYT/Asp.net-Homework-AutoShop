@@ -1,5 +1,5 @@
-﻿using DataAccess.Helpers;
-using DataAccess.Models;
+﻿using DataAccess.EntityInitializers;
+using DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Query;
@@ -26,6 +26,8 @@ namespace DataAccess.Data
 
             CategoryInitializer.SeedData(categoryBuilder);
             CarInitializer.SeedData(carBuilder);
+
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarContext).Assembly);
         }
 
         public void AddCar(Car car)
