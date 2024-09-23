@@ -11,6 +11,12 @@
     <div class="text-danger" asp-validation-summary="All"></div>
 
     <div class="m-1">
+        <label class="form-label" asp-for="Car.ImagePath">Image Path</label>
+        <input class="form-control" type="url" asp-for="Car.ImagePath" />
+        <span class="text-danger" asp-validation-for="Car.ImagePath"></span>
+    </div>
+
+    <div class="m-1">
         <label class="form-label" asp-for="Car.Model">Model</label>
         <input class="form-control" asp-for="Car.Model" />
         <span class="text-danger" asp-validation-for="Car.Model"></span>
@@ -37,6 +43,12 @@
             }
         </select>
         <span class="text-danger" asp-validation-for="Car.CategoryId"></span>
+    </div>
+
+    <div class="m-1">
+        <label class="form-label" asp-for="Car.Price">Price</label>
+        <input class="form-control" asp-for="Car.Price" />
+        <span class="text-danger" asp-validation-for="Car.Price"></span>
     </div>
 
     <div class="m-1">

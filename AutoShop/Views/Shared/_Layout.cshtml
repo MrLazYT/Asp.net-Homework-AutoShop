@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@using AutoShop.Extensions;
+
+@{
+    Dictionary<int, int> idsAndQuantities = Context.Session.GetObject<Dictionary<int, int>>("cart");
+    int carsInCartCount = idsAndQuantities?.Values.Sum() ?? 0;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -32,6 +39,12 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
                         </li>
                     </ul>
+
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index"><i class="fa-solid fa-cart-shopping"></i> @carsInCartCount</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -50,6 +63,7 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://kit.fontawesome.com/483f1d1bf4.js" crossorigin="anonymous"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

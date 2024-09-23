@@ -1,0 +1,52 @@
+﻿@using AutoShop.Extensions;
+
+@{
+    Dictionary<int, int> idsAndQuantities = Context.Session.GetObject<Dictionary<int, int>>("cart");
+}
+
+@model List<Car>
+
+<div class="container w-50">
+    @if (Model != null && Model.Count != 0)
+    {
+        <table>
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Image</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach(Car car in Model)
+                {
+                    <tr>
+                        <th>@car.Id</th>
+                        <td><img style="width: 150px;" src="@car.ImagePath" /></td>
+                        <td>@car.Model</td>
+                        <td>@car.Year</td>
+                        <td>@car.Category</td>
+                        <td>@car.Price</td>
+                        <td>
+                            <div class="btn-group">
+                                <a class="btn btn-primary" asp-controller="Cart" asp-action="MinusProductQuantity" asp-route-id="@car.Id">-</a>
+                                <span class="btn btn-light">@idsAndQuantities[car.Id]</span>
+                                <a class="btn btn-primary" asp-controller="Cart" asp-action="PlusProductQuantity" asp-route-id="@car.Id">+</a>
+                            </div>
+                            <a class="btn btn-white" asp-controller="Cart" asp-action="Remove" asp-route-id="@car.Id"><i class="fa-solid fa-trash text-danger"></i></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h3>The Cart is empty</h3>
+    }
+</div>

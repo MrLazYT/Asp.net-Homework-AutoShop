@@ -52,10 +52,12 @@ namespace AutoShop.Validators
                 return true;
             }
 
-            return car.Model != sourceCar.Model &&
+            return car.ImagePath != sourceCar.ImagePath &&
+                   car.Model != sourceCar.Model &&
                    car.Color != sourceCar.Color &&
                    car.Year != sourceCar.Year &&
-                   car.CategoryId != sourceCar.CategoryId;
+                   car.CategoryId != sourceCar.CategoryId &&
+                   car.Price != sourceCar.Price;
         }
 
         /*private void AddModelErrors(bool areCarFieldsValid, bool areFieldsChanged)

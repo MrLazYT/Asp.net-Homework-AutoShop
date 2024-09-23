@@ -2,6 +2,7 @@ using DataAccess.Data;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using AutoShop.Services;
 
 namespace AutoShop
 {
@@ -17,8 +18,15 @@ namespace AutoShop
 			builder.Services.AddFluentValidationAutoValidation();
 			builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
 
+			builder.Services.AddDistributedMemoryCache();
+			builder.Services.AddSession();
+
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
+
+			builder.Services.AddHttpContextAccessor();
+
+			builder.Services.AddScoped<SessionData>();
 
 			WebApplication app = builder.Build();
 
@@ -36,6 +44,7 @@ namespace AutoShop
 			app.UseRouting();
 
 			app.UseAuthorization();
+			app.UseSession();
 
 			app.MapControllerRoute(
 				name: "default",
