@@ -1,4 +1,7 @@
-﻿using AutoShop.Validators;
+﻿using AutoShop.Helpers;
+using AutoShop.Models;
+using AutoShop.Services;
+using AutoShop.Validators;
 using DataAccess.Data;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -6,18 +9,21 @@ using System.Reflection;
 
 namespace AutoShop.Controllers
 {
-	public class CarsController : Controller
+    public class CarsController : Controller
 	{
 		public readonly CarContext _context;
 		public readonly CarViewModel _carViewModel;
 		public readonly CarsViewModel _carsViewModel;
         public readonly CarModelValidator _validator;
+        private readonly CarData _carData;
 
-        public CarsController(CarContext context)
+        public CarsController(CarContext context, SessionData sessionData)
 		{
 			_context = context;
+            _carData = new CarData(_context, sessionData);
 
-			List<Car> cars = _context.GetCarList();
+            List<Car> cars = _context.GetCarList();
+			List<ProductCartViewModel> productCartViewModels = _carData.GetProductCartViewModels();
             List<Category> categories = new List<Category>()
             {
                 new Category {
@@ -29,7 +35,7 @@ namespace AutoShop.Controllers
 
             categories.AddRange(_context.GetCategoryList());
 
-			_carsViewModel = new CarsViewModel(cars, categories);
+			_carsViewModel = new CarsViewModel(productCartViewModels, categories);
 			_carViewModel = new CarViewModel(new Car(), categories);
 			_validator = new CarModelValidator(_context, ModelState);
 		}
@@ -60,7 +66,7 @@ namespace AutoShop.Controllers
 			return property;
         }
 
-		private List<Car> GetFilteredCars(int categoryId, bool isDescending, PropertyInfo property)
+		private List<ProductCartViewModel> GetFilteredCars(int categoryId, bool isDescending, PropertyInfo property)
 		{
             List<Car> carsByCategory = _context.GetCarListByCategory(categoryId);
 			List<Car> carsByOrder;
@@ -74,7 +80,9 @@ namespace AutoShop.Controllers
 				carsByOrder = _context.GetSortedCarsDesc(carsByCategory, property);
 			}
 
-			return carsByOrder;
+            List<ProductCartViewModel> productCartViewModel = _carData.GetProductCartViewModels(carsByOrder);
+
+			return productCartViewModel;
         }
 
         [HttpGet]

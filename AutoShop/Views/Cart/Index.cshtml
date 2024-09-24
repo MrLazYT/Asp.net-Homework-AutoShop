@@ -9,7 +9,7 @@
 <div class="container w-50">
     @if (Model != null && Model.Count != 0)
     {
-        <table>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Id</th>
@@ -33,12 +33,17 @@
                         <td>@car.Category</td>
                         <td>@car.Price</td>
                         <td>
-                            <div class="btn-group">
-                                <a class="btn btn-primary" asp-controller="Cart" asp-action="MinusProductQuantity" asp-route-id="@car.Id">-</a>
-                                <span class="btn btn-light">@idsAndQuantities[car.Id]</span>
-                                <a class="btn btn-primary" asp-controller="Cart" asp-action="PlusProductQuantity" asp-route-id="@car.Id">+</a>
+                            <div class="container d-flex">
+                                <div class="btn-group">
+                                    <a class="btn btn-primary" asp-controller="Cart" asp-action="MinusProductQuantity" asp-route-id="@car.Id">-</a>
+                                    
+                                    <span class="btn btn-light disabled">@idsAndQuantities[car.Id]</span>
+                                    
+                                    <a class="btn btn-primary" asp-controller="Cart" asp-action="PlusProductQuantity" asp-route-id="@car.Id">+</a>
+                                </div>
+                                
+                                <a class="btn btn-white m-1" asp-controller="Cart" asp-action="Remove" asp-route-id="@car.Id"><i class="fa-solid fa-trash text-danger"></i></a>
                             </div>
-                            <a class="btn btn-white" asp-controller="Cart" asp-action="Remove" asp-route-id="@car.Id"><i class="fa-solid fa-trash text-danger"></i></a>
                         </td>
                     </tr>
                 }

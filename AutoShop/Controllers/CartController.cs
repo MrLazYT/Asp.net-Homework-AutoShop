@@ -1,5 +1,4 @@
-﻿using AutoShop.Extensions;
-using AutoShop.Services;
+﻿using AutoShop.Services;
 using DataAccess.Data;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;

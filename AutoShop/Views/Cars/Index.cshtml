@@ -1,13 +1,4 @@
-﻿@using AutoShop.Extensions;
-
-@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-    Dictionary<int, int> idsAndQuantities = Context.Session.GetObject<Dictionary<int, int>>("cart") ?? new Dictionary<int, int>();
-    List<int> carIdsInCart = idsAndQuantities.Keys.ToList();
-}
-@model CarsViewModel
+﻿@model CarsViewModel
 
 <div class="container d-flex">
     <div class="nav flex-column text-start">
@@ -60,36 +51,36 @@
         </div>
 
         <div class="d-flex flex-wrap">
-            @foreach(Car car in Model.Cars)
+            @foreach(ProductCartViewModel viewModel in Model.Cars)
             {
                 <div class="card m-1" style="width: 17rem">
                     <img />
 
                     <div class="card-body">
                         <div class="container" style="width: 100%; height: 120px;">
-                            <img class="card-img-top" style="width: 100%; height: 100%; object-fit: cover" src="@car.ImagePath" alt="@car.Model image" />
+                            <img class="card-img-top" style="width: 100%; height: 100%; object-fit: cover" src="@viewModel.Car.ImagePath" alt="@viewModel.Car.Model image" />
                         </div>
 
                         <div class="container m-1">
-                            <h5 class="card-title">@car.Model</h5>
-                            <p class="card-text">@car.Color</p>
-                            <p class="card-text">@car.Year</p>
-                            <p class="card-text text-primary">@car.Category</p>
-                            <h5 class="card-subtitle text-end">$@car.Price</h5>
+                            <h5 class="card-title">@viewModel.Car.Model</h5>
+                            <p class="card-text">@viewModel.Car.Color</p>
+                            <p class="card-text">@viewModel.Car.Year</p>
+                            <p class="card-text text-primary">@viewModel.Car.Category</p>
+                            <h5 class="card-subtitle text-end">$@viewModel.Car.Price</h5>
                         </div>
 
                         <div class="btn-group">
-                            @if(carIdsInCart.Contains(car.Id))
+                            @if(viewModel.IsInCart)
                             {
-                                <a class="btn btn-primary disabled" asp-controller="Cart" asp-action="Add" asp-route-id="@car.Id">Add in Cart</a>
+                                <a class="btn btn-primary disabled" asp-controller="Cart" asp-action="Add" asp-route-id="@viewModel.Car.Id">Add in Cart</a>
                             }
                             else
                             {
-                                <a class="btn btn-primary" asp-controller="Cart" asp-action="Add" asp-route-id="@car.Id">Add to Cart</a>
+                                <a class="btn btn-primary" asp-controller="Cart" asp-action="Add" asp-route-id="@viewModel.Car.Id">Add to Cart</a>
                             }
 
-                            <a class="btn btn-primary" asp-controller="Cars" asp-action="Edit" asp-route-id="@car.Id">Edit</a>
-                            <a class="btn btn-danger" asp-controller="Cars" asp-action="Delete" asp-route-id="@car.Id">Delete</a>
+                            <a class="btn btn-primary" asp-controller="Cars" asp-action="Edit" asp-route-id="@viewModel.Car.Id">Edit</a>
+                            <a class="btn btn-danger" asp-controller="Cars" asp-action="Delete" asp-route-id="@viewModel.Car.Id">Delete</a>
                         </div>
                     </div>
                 </div>

@@ -1,8 +1,67 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+
+    string hasPrevPage = Model.HasPrevPage ? "" : "disabled";
+    string hasNextPage = Model.HasNextPage ? "" : "disabled";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+@using AutoShop.Helpers;
+
+@model PaginatedList<ProductCartViewModel>
+
+<div class="container">
+    <div class="btn-group">
+        <a class="btn btn-primary" asp-controller="Cars" asp-action="Add">Add Car</a>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <a asp-controller="Home" asp-action="Index" asp-route-pageIndex="@Model.PageIndex" asp-route-sortOrder="@ViewData["IdSort"]">Id</a>
+                </th>
+                <th>
+                    <a asp-controller="Home" asp-action="Index" asp-route-pageIndex="@Model.PageIndex" asp-route-sortOrder="@ViewData["ModelSort"]">Model</a>
+                </th>
+                <th>
+                    <a asp-controller="Home" asp-action="Index" asp-route-pageIndex="@Model.PageIndex" asp-route-sortOrder="@ViewData["ColorSort"]">Color</a>
+                </th>
+                <th>
+                    <a asp-controller="Home" asp-action="Index" asp-route-pageIndex="@Model.PageIndex" asp-route-sortOrder="@ViewData["YearSort"]">Year</a>
+                </th>
+                <th>
+                    <a asp-controller="Home" asp-action="Index" asp-route-pageIndex="@Model.PageIndex" asp-route-sortOrder="@ViewData["CategorySort"]">Category</a>
+                </th>
+                <th>
+                    <a asp-controller="Home" asp-action="Index" asp-route-pageIndex="@Model.PageIndex" asp-route-sortOrder="@ViewData["PriceSort"]">Price</a>
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (ProductCartViewModel viewModel in Model)
+            {
+                <tr>
+                    <th>@viewModel.Car.Id</th>
+                    <td>@viewModel.Car.Model</td>
+                    <td>@viewModel.Car.Color</td>
+                    <td>@viewModel.Car.Year</td>
+                    <td>@viewModel.Car.Category</td>
+                    <td>@viewModel.Car.Price</td>
+                    <td>
+                        <a class="btn btn-primary" asp-controller="Cars" asp-action="Edit" asp-route-id="@viewModel.Car.Id">Edit</a>
+                        <a class="btn btn-danger" asp-controller="Cars" asp-action="Delete" asp-route-id="@viewModel.Car.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p>Page @Model.PageIndex of @Model.TotalPages</p>
+
+    <div class="btn-group">
+        <a class="btn btn-primary @hasPrevPage" asp-controller="Home" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex - 1)" asp-route-sortOrder="@ViewData["CurrentSort"]">Previous</a>
+        <a class="btn btn-primary @hasNextPage" asp-controller="Home" asp-action="Index" asp-route-pageIndex="@(Model.PageIndex + 1)" asp-route-sortOrder="@ViewData["CurrentSort"]">Next</a>
+    </div>
 </div>
