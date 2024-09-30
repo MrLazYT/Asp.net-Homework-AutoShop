@@ -4,8 +4,6 @@ using AutoShop.Services;
 using DataAccess.Data;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using System.Diagnostics;
 
 namespace AutoShop.Controllers

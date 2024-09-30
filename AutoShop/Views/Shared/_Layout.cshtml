@@ -1,4 +1,9 @@
 ﻿@using AutoShop.Extensions;
+@using Microsoft.AspNetCore.Identity
+@using DataAccess.Entities
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
 
 @{
     Dictionary<int, int> idsAndQuantities = Context.Session.GetObject<Dictionary<int, int>>("cart");
@@ -40,11 +45,16 @@
                         </li>
                     </ul>
 
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index"><i class="fa-solid fa-cart-shopping"></i> @carsInCartCount</a>
-                        </li>
-                    </ul>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Cart" asp-action="Index"><i class="fa-solid fa-cart-shopping"></i> @carsInCartCount</a>
+                            </li>
+                        </ul>
+                    }
+
+                    <partial name="_LoginPartial"/>
                 </div>
             </div>
         </nav>

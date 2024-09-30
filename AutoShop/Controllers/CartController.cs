@@ -1,12 +1,14 @@
 ﻿using AutoShop.Services;
 using DataAccess.Data;
 using DataAccess.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
 namespace AutoShop.Controllers
 {
+    [Authorize]
     public class CartController : Controller
     {
         public readonly CarContext _context;

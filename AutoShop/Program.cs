@@ -3,6 +3,8 @@ using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using AutoShop.Services;
+using Microsoft.AspNetCore.Identity;
+using DataAccess.Entities;
 
 namespace AutoShop
 {
@@ -14,6 +16,11 @@ namespace AutoShop
 
 			builder.Services.AddDbContext<CarContext>(
 				options => options.UseSqlServer(builder.Configuration.GetConnectionString("CarContext")));
+			
+			builder.Services.AddDefaultIdentity<User>(
+				options => options.SignIn.RequireConfirmedAccount = true
+				)
+				.AddEntityFrameworkStores<CarContext>();
 
 			builder.Services.AddFluentValidationAutoValidation();
 			builder.Services.AddValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies());
@@ -45,6 +52,8 @@ namespace AutoShop
 
 			app.UseAuthorization();
 			app.UseSession();
+
+			app.MapRazorPages();
 
 			app.MapControllerRoute(
 				name: "default",
