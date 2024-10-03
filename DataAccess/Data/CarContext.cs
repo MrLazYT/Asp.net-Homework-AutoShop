@@ -13,6 +13,7 @@ namespace DataAccess.Data
         public DbSet<Car> Cars { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
         public CarContext(DbContextOptions<CarContext> options) : base(options)
 		{
@@ -50,6 +51,12 @@ namespace DataAccess.Data
             SaveChanges();
         }
 
+        public void AddOrder(Order order)
+        {
+            Orders.Add(order);
+            SaveChanges();
+        }
+
         public Car GetCarById(int id)
         {
             List<Car> cars = GetCarList();
@@ -64,6 +71,21 @@ namespace DataAccess.Data
 
 			return cars.ToList();
 		}
+
+        public List<Car> GetCarsFromIdsString(string carIdsString)
+        {
+            List<Car> cars = GetCarList();
+
+            string formattedCarIds = carIdsString
+                                        .Replace("[", "")
+                                        .Replace("]", "");
+
+            List<string> carIdsStrings = formattedCarIds.Split(',').ToList();
+            List<int> carIds = carIdsStrings.Select(id => int.Parse(id)).ToList();
+            List<Car> selectedCars = carIds.SelectMany(id => cars.Where(car => car.Id == id).Take(1)).ToList();
+
+            return selectedCars;
+        }
 
         public IIncludableQueryable<Car, Category> IncludeCategories(IQueryable<Car> cars)
         {
@@ -86,6 +108,13 @@ namespace DataAccess.Data
 
 			return Cars.ToList();
 		}
+
+        public List<Order> GetOrderListByUserId(string userId)
+        {
+            IQueryable<Order> orders = Orders.Where(order => order.UserId.Equals(userId));
+            
+            return orders.ToList();
+        }
 
         public List<Car> GetSortedCars(List<Car> cars, PropertyInfo property)
 		{

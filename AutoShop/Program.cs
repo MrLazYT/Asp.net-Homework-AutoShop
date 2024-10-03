@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoShop.Services;
 using Microsoft.AspNetCore.Identity;
 using DataAccess.Entities;
+using AutoShop.Helpers;
 
 namespace AutoShop
 {
@@ -20,6 +21,7 @@ namespace AutoShop
 			builder.Services.AddDefaultIdentity<User>(
 				options => options.SignIn.RequireConfirmedAccount = true
 				)
+				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<CarContext>();
 
 			builder.Services.AddFluentValidationAutoValidation();
@@ -36,6 +38,14 @@ namespace AutoShop
 			builder.Services.AddScoped<SessionData>();
 
 			WebApplication app = builder.Build();
+
+			using (var scope = app.Services.CreateScope())
+			{
+				IServiceProvider serviceProvider = scope.ServiceProvider;
+
+				RoleSeeder.SeedRoles(serviceProvider).Wait();
+				RoleSeeder.SeedAdmin(serviceProvider).Wait();
+			}
 
 			// Configure the HTTP request pipeline.
 			if (!app.Environment.IsDevelopment())

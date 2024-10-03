@@ -1,0 +1,8 @@
+﻿@model IEnumerable<User>
+
+@foreach (var user in Model)
+{
+    <li>
+        @user.UserName
+    </li>
+}

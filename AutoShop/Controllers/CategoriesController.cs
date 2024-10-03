@@ -5,9 +5,11 @@ using DataAccess.Entities;
 using AutoShop.Validators;
 using FluentValidation.Results;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AutoShop.Controllers
 {
+    [Authorize(Roles = "Admin, User")]
     public class CategoriesController : Controller
     {
         private readonly CarContext _context;
@@ -20,6 +22,7 @@ namespace AutoShop.Controllers
         }
 
         // GET: Categories
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Categories.ToListAsync());
