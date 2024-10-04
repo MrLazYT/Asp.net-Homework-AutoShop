@@ -1,4 +1,8 @@
-﻿@model CarsViewModel
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
+
+@model CarsViewModel
 
 <div class="container d-flex">
     <div class="nav flex-column text-start">
@@ -47,7 +51,10 @@
         </div>
 
         <div class="btn-group">
-            <a class="btn btn-primary m-1" asp-controller="Cars" asp-action="Add">Add Car</a>
+            @if(SignInManager.IsSignedIn(User))
+            {
+                <a class="btn btn-primary m-1" asp-controller="Cars" asp-action="Add">Add Car</a>
+            }
         </div>
 
         <div class="d-flex flex-wrap">
@@ -72,15 +79,18 @@
                         <div class="btn-group">
                             @if(viewModel.IsInCart)
                             {
-                                <a class="btn btn-primary disabled" asp-controller="Cart" asp-action="Add" asp-route-id="@viewModel.Car.Id">Add in Cart</a>
+                                <a class="btn btn-primary disabled" asp-controller="Cart" asp-action="Add" asp-route-id="@viewModel.Car.Id">Added in Cart</a>
                             }
                             else
                             {
                                 <a class="btn btn-primary" asp-controller="Cart" asp-action="Add" asp-route-id="@viewModel.Car.Id">Add to Cart</a>
                             }
 
-                            <a class="btn btn-primary" asp-controller="Cars" asp-action="Edit" asp-route-id="@viewModel.Car.Id">Edit</a>
-                            <a class="btn btn-danger" asp-controller="Cars" asp-action="Delete" asp-route-id="@viewModel.Car.Id">Delete</a>
+                            @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                            {
+                                <a class="btn btn-primary" asp-controller="Cars" asp-action="Edit" asp-route-id="@viewModel.Car.Id">Edit</a>
+                                <a class="btn btn-danger" asp-controller="Cars" asp-action="Delete" asp-route-id="@viewModel.Car.Id">Delete</a>
+                            }
                         </div>
                     </div>
                 </div>

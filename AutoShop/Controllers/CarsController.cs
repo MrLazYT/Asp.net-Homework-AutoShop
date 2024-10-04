@@ -4,6 +4,7 @@ using AutoShop.Services;
 using AutoShop.Validators;
 using DataAccess.Data;
 using DataAccess.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
@@ -86,18 +87,21 @@ namespace AutoShop.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add()
         {
             return View(_carViewModel);
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Add(Car car)
         {
             return ExecuteActionIfCarExists(_context.AddCar, car);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
 		public IActionResult Edit(int id)
 		{
 			Car car = _context.GetCarById(id);
@@ -106,6 +110,7 @@ namespace AutoShop.Controllers
         }
 
 		[HttpPost]
+        [Authorize(Roles = "Admin")]
 		public IActionResult Edit(int id, Car car)
 		{
 			car.Id = id;
@@ -113,6 +118,7 @@ namespace AutoShop.Controllers
 			return ExecuteActionIfCarExists(_context.UpdateCar, car);
 		}
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             Car car = _context.GetCarById(id);

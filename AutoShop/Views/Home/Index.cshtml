@@ -6,6 +6,9 @@
 }
 
 @using AutoShop.Helpers;
+@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<User> SignInManager
 
 @model PaginatedList<ProductCartViewModel>
 
@@ -35,7 +38,11 @@
                 <th>
                     <a asp-controller="Home" asp-action="Index" asp-route-pageIndex="@Model.PageIndex" asp-route-sortOrder="@ViewData["PriceSort"]">Price</a>
                 </th>
-                <th>Actions</th>
+
+                @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <th>Actions</th>
+                }
             </tr>
         </thead>
 
@@ -49,10 +56,14 @@
                     <td>@viewModel.Car.Year</td>
                     <td>@viewModel.Car.Category</td>
                     <td>@viewModel.Car.Price</td>
-                    <td>
-                        <a class="btn btn-primary" asp-controller="Cars" asp-action="Edit" asp-route-id="@viewModel.Car.Id">Edit</a>
-                        <a class="btn btn-danger" asp-controller="Cars" asp-action="Delete" asp-route-id="@viewModel.Car.Id">Delete</a>
-                    </td>
+
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <a class="btn btn-primary" asp-controller="Cars" asp-action="Edit" asp-route-id="@viewModel.Car.Id">Edit</a>
+                            <a class="btn btn-danger" asp-controller="Cars" asp-action="Delete" asp-route-id="@viewModel.Car.Id">Delete</a>
+                        </td>
+                    }
                 </tr>
             }
         </tbody>

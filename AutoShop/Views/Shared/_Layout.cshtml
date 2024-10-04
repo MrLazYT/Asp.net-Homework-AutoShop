@@ -1,6 +1,5 @@
 ﻿@using AutoShop.Extensions;
 @using Microsoft.AspNetCore.Identity
-@using DataAccess.Entities
 
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
@@ -45,6 +44,10 @@
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="Index">Orders</a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
                             </li>
                         }
                     </ul>

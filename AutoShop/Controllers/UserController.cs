@@ -1,10 +1,11 @@
-﻿using DataAccess.Data;
-using DataAccess.Entities;
+﻿using DataAccess.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AutoShop.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         private UserManager<User> userManager;
