@@ -2,10 +2,13 @@ using DataAccess.Data;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using AutoShop.Services;
 using Microsoft.AspNetCore.Identity;
 using DataAccess.Entities;
 using AutoShop.Helpers;
+using BusinessLogic.Services;
+using BusinessLogic.Helper;
+using BusinessLogic.Interfaces;
+using BusinessLogic.Sevices;
 
 namespace AutoShop
 {
@@ -16,7 +19,11 @@ namespace AutoShop
 			WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 			builder.Services.AddDbContext<CarContext>(
-				options => options.UseSqlServer(builder.Configuration.GetConnectionString("CarContext")));
+				options =>
+				{
+					options.UseSqlServer(builder.Configuration.GetConnectionString("CarContext"));
+					options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+				});
 			
 			builder.Services.AddDefaultIdentity<User>(
 				options => options.SignIn.RequireConfirmedAccount = true
@@ -36,6 +43,12 @@ namespace AutoShop
 			builder.Services.AddHttpContextAccessor();
 
 			builder.Services.AddScoped<SessionData>();
+            builder.Services.AddScoped<CarService>();
+            builder.Services.AddScoped<CategoryService>();
+            builder.Services.AddScoped<CartService>();
+			builder.Services.AddScoped<IFileService, FileService>();
+
+			builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 			WebApplication app = builder.Build();
 

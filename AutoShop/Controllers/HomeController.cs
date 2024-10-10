@@ -1,8 +1,7 @@
 using AutoShop.Helpers;
 using AutoShop.Models;
-using AutoShop.Services;
-using DataAccess.Data;
-using DataAccess.Entities;
+using BusinessLogic.DTOs;
+using BusinessLogic.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -10,17 +9,15 @@ namespace AutoShop.Controllers
 {
     public class HomeController : Controller
 	{
-		private readonly ILogger<HomeController> _logger;
-		private readonly CarContext _context;
+		private readonly CarService _carService;
 		private readonly SessionData _sessionData;
 		private readonly CarData _carData;
 
-		public HomeController(ILogger<HomeController> logger, CarContext context, SessionData sessionData)
+		public HomeController(CarService carService, SessionData sessionData)
 		{
-			_logger = logger;
-			_context = context;
+			_carService = carService;
 			_sessionData = sessionData;
-			_carData = new CarData(_context, _sessionData);
+			_carData = new CarData(_carService, _sessionData);
 		}
 
 		public IActionResult Index(int? pageIndex, string? sortOrder)
@@ -36,7 +33,7 @@ namespace AutoShop.Controllers
 			ViewData["PriceSort"] = sortOrder == "price" ? "price_desc" : "price";
 			
 			List<ProductCartViewModel> productCartViewModels = _carData.GetProductCartViewModels();
-            List<Car> cars = _carData.GetCars(productCartViewModels);
+            List<CarDto> cars = _carData.GetCars(productCartViewModels);
 
             switch (sortOrder)
 			{
@@ -62,10 +59,10 @@ namespace AutoShop.Controllers
                     productCartViewModels = _carData.GetProductCartViewModels(cars.OrderByDescending(c => c.Year));
                     break;
                 case "category":
-                    productCartViewModels = _carData.GetProductCartViewModels(cars.OrderBy(c => c.Category?.Name));
+                    productCartViewModels = _carData.GetProductCartViewModels(cars.OrderBy(c => c.CategoryName));
                     break;
 				case "category_desc":
-                    productCartViewModels = _carData.GetProductCartViewModels(cars.OrderByDescending(c => c.Category?.Name));
+                    productCartViewModels = _carData.GetProductCartViewModels(cars.OrderByDescending(c => c.CategoryName));
                     break;
                 case "price":
                     productCartViewModels = _carData.GetProductCartViewModels(cars.OrderBy(c => c.Price));

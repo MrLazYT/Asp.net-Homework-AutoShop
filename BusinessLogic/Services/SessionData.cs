@@ -1,6 +1,7 @@
-﻿using AutoShop.Extensions;
+﻿using BusinessLogic.Extensions;
+using Microsoft.AspNetCore.Http;
 
-namespace AutoShop.Services
+namespace BusinessLogic.Services
 {
     public class SessionData
     {
@@ -21,6 +22,11 @@ namespace AutoShop.Services
         public void SetCartData(Dictionary<int, int> cartData)
         {
             HttpContext.Session.SetObject<Dictionary<int, int>>("cart", cartData);
+        }
+
+        public void ClearData()
+        {
+            HttpContext.Session.Clear();
         }
     }
 }

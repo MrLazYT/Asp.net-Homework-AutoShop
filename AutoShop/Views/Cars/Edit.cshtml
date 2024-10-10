@@ -2,19 +2,29 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    ViewData["Title"] = "Editing Car";
 }
 @model CarViewModel
 
 <h1>Editing Car</h1>
 
-<form method="post">
+<form method="post" asp-action="Edit" enctype="multipart/form-data">
     <div class="text-danger" asp-validation-summary="All"></div>
 
-    <div class="m-1">
-        <label class="form-label" asp-for="Car.ImagePath">Image Path</label>
-        <input class="form-control" type="url" asp-for="Car.ImagePath" value="@Model.Car.ImagePath" />
-        <span class="text-danger" asp-validation-for="Car.ImagePath"></span>
-    </div>
+     @* <div class="m-1">
+         <label class="form-label" asp-for="Car.ImagePath">Image Path</label>
+         <input class="form-control" type="url" asp-for="Car.ImagePath" value="@Model.Car.ImagePath" />
+         <span class="text-danger" asp-validation-for="Car.ImagePath"></span>
+     </div> *@
+
+     <div class="m-1">
+        <input asp-for="Car.ImagePath" hidden />
+
+        <div class="col-6">
+            <label asp-for="Car.Image" class="form-label">Image</label>
+            <input asp-for="Car.Image" class="form-control" type="file" id="formFile">
+        </div>
+     </div>
 
     <div class="m-1">
         <label class="form-label" asp-for="Car.Model">Model</label>
@@ -37,7 +47,7 @@
     <div class="m-1">
         <label class="form-label" asp-for="Car.CategoryId">Category</label>
         <select class="form-select" asp-for="Car.CategoryId">
-            @foreach (Category category in Model.Categories)
+            @foreach (CategoryDto category in Model.Categories)
             {
                 @if (category.Id == Model.Car.CategoryId)
                 {

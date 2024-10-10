@@ -1,113 +1,58 @@
-﻿using AutoShop.Services;
-using DataAccess.Data;
-using DataAccess.Entities;
+﻿using BusinessLogic.Services;
+using BusinessLogic.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
+using DataAccess.Entities;
 
 namespace AutoShop.Controllers
 {
     [Authorize]
     public class CartController : Controller
     {
-        public readonly CarContext _context;
-        public readonly SessionData _sessionData;
+        private readonly CartService _cartService;
 
-        public CartController(CarContext context, SessionData sessionData)
+        public CartController(CartService cartService)
         {
-            _context = context;
-            _sessionData = sessionData;
+            _cartService = cartService;
         }
 
         public IActionResult Index()
         {
-            Dictionary<int, int> idsAndQuantities = _sessionData.GetCartData();
-            List<int> ids = idsAndQuantities.Keys.ToList();
-            DbSet<Car> cars = _context.Cars;
-            IIncludableQueryable<Car, Category> carsWithCat = cars.Include(car => car.Category)!;
-            List<Car> carsInCart = null!;
-            
-            if (carsWithCat != null)
-            {
-                carsInCart = carsWithCat.Where(car => ids.Contains(car.Id)).ToList();
-            }
+            List<CarDto> cars = _cartService.GetAllFromCart();
 
-
-            return View(carsInCart);
+            return View(cars);
         }
 
         public IActionResult Add(int id)
         {
-            Dictionary<int, int> idsAndQuantities = _sessionData.GetCartData();
+            CarDto carDto = _cartService.GetById(id);
 
-            InvokeFunc(null!, id, controllerName: "Cars");
+            _cartService.Add(carDto);
 
             return RedirectToAction("Index", "Cars");
         }
 
         public IActionResult Remove(int id)
         {
-            InvokeFunc(RemoveCarIdFromCart, id);
+            CarDto carDto = _cartService.GetById(id);
+
+            _cartService.Delete(carDto);
 
             return RedirectToAction("Index");
         }
 
         public IActionResult PlusProductQuantity(int id)
         {
-            InvokeFunc(PlusQuantity, id);
+            _cartService.PlusQuantity(id);
 
             return RedirectToAction("Index");
         }
 
         public IActionResult MinusProductQuantity(int id)
         {
-            InvokeFunc(MinusQuantity, id);
+            _cartService.MinusQuantity(id);
 
             return RedirectToAction("Index");
-        }
-
-        private IActionResult InvokeFunc(Func<int, Dictionary<int, int>, Dictionary<int, int>> func, int id, string controllerName = "Cart")
-        {
-            Dictionary<int, int> idsAndQuantities = _sessionData.GetCartData();
-
-            if (!idsAndQuantities.ContainsKey(id))
-            {
-                idsAndQuantities.Add(id, 1);
-            }
-
-            if (func != null)
-            {
-                idsAndQuantities = func.Invoke(id, idsAndQuantities);
-            }
-
-            _sessionData.SetCartData(idsAndQuantities);
-
-            return RedirectToAction("Index", controllerName);
-        }
-
-        private Dictionary<int, int> RemoveCarIdFromCart(int id, Dictionary<int, int> idsAndQuantities)
-        {
-            idsAndQuantities.Remove(id);
-
-            return idsAndQuantities;
-        }
-
-        private Dictionary<int, int> PlusQuantity(int id, Dictionary<int, int> idsAndQuantities)
-        {
-            idsAndQuantities[id] = ++idsAndQuantities[id];
-
-            return idsAndQuantities;
-        }
-
-        private Dictionary<int, int> MinusQuantity(int id, Dictionary<int, int> idsAndQuantities)
-        {
-            if (idsAndQuantities[id] != 1)
-            {
-                idsAndQuantities[id] = --idsAndQuantities[id];
-            }
-
-            return idsAndQuantities;
         }
     }
 }

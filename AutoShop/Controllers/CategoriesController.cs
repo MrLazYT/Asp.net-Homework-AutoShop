@@ -1,43 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DataAccess.Data;
-using DataAccess.Entities;
-using AutoShop.Validators;
+using BusinessLogic.Validators;
 using FluentValidation.Results;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
+using BusinessLogic.Services;
+using BusinessLogic.DTOs;
 
 namespace AutoShop.Controllers
 {
     [Authorize(Roles = "Admin, User")]
     public class CategoriesController : Controller
     {
-        private readonly CarContext _context;
+        private readonly CategoryService _categoryService;
         private readonly CategoryValidator _validator;
 
-        public CategoriesController(CarContext context)
+        public CategoriesController(CategoryService categoryService)
         {
-            _context = context;
+            _categoryService = categoryService;
             _validator = new CategoryValidator();
         }
 
-        // GET: Categories
         [AllowAnonymous]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(_categoryService.GetAll());
         }
 
-        // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = _categoryService.GetAll()
+                .FirstOrDefault(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -46,40 +44,35 @@ namespace AutoShop.Controllers
             return View(category);
         }
 
-        // GET: Categories/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Category category)
+        public IActionResult Create([Bind("Id,Name,Description")] CategoryDto category)
         {
             ValidationResult validationResult = _validator.Validate(category);
             validationResult.AddToModelState(ModelState);
             
             if (ModelState.IsValid && validationResult.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                _categoryService.Add(category);
+                
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
         }
 
-        // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = _categoryService.GetAll().Find(category => category.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -87,12 +80,9 @@ namespace AutoShop.Controllers
             return View(category);
         }
 
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Category category)
+        public IActionResult Edit(int id, [Bind("Id,Name,Description")] CategoryDto category)
         {
             if (id != category.Id)
             {
@@ -106,8 +96,7 @@ namespace AutoShop.Controllers
             {
                 try
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    _categoryService.Update(category);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,16 +114,15 @@ namespace AutoShop.Controllers
             return View(category);
         }
 
-        // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = _categoryService.GetAll()
+                .FirstOrDefault(m => m.Id == id);
             if (category == null)
             {
                 return NotFound();
@@ -143,24 +131,22 @@ namespace AutoShop.Controllers
             return View(category);
         }
 
-        // POST: Categories/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = _categoryService.GetAll().Find(category => category.Id == id);
             if (category != null)
             {
-                _context.Categories.Remove(category);
+                _categoryService.Delete(category);
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _categoryService.GetAll().Any(e => e.Id == id);
         }
     }
 }

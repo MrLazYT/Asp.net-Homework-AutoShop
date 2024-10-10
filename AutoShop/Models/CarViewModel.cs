@@ -1,16 +1,18 @@
-﻿namespace DataAccess.Entities
+﻿using BusinessLogic.DTOs;
+
+namespace DataAccess.Entities
 {
     public class CarViewModel
     {
-        public Car Car { get; set; } = default!;
-        public List<Category> Categories { get; set; } = default!;
+        public CarDto Car { get; set; } = default!;
+        public List<CategoryDto> Categories { get; set; } = default!;
 
-        public CarViewModel(List<Category> categories)
+        public CarViewModel(List<CategoryDto> categories)
         {
             Categories = categories;
         }
 
-        public CarViewModel(Car car, List<Category> categories)
+        public CarViewModel(CarDto car, List<CategoryDto> categories)
         {
             Car = car;
             Categories = categories;

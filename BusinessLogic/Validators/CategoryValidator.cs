@@ -1,9 +1,9 @@
-﻿using DataAccess.Entities;
+﻿using BusinessLogic.DTOs;
 using FluentValidation;
 
-namespace AutoShop.Validators
+namespace BusinessLogic.Validators
 {
-    public class CategoryValidator : AbstractValidator<Category>
+    public class CategoryValidator : AbstractValidator<CategoryDto>
     {
         public CategoryValidator()
         {

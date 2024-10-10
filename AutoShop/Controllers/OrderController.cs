@@ -1,9 +1,10 @@
 ﻿using AutoShop.Models;
-using AutoShop.Services;
+using BusinessLogic.Services;
 using DataAccess.Data;
 using DataAccess.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace AutoShop.Controllers
@@ -56,9 +57,14 @@ namespace AutoShop.Controllers
             string? userId = HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             Order order = CreateOrder();
-
+            
+            RemoveCarsFromStorage();
+            UpdateSoldCarsCount();
+            
+            _sessionData.ClearData();
             _context.AddOrder(order);
 
+            
             return RedirectToAction("Index");
         }
 
@@ -105,6 +111,54 @@ namespace AutoShop.Controllers
             }
 
             return res;
+        }
+
+        private void RemoveCarsFromStorage()
+        {
+            List<Car> cars = _context.GetCarList();
+            Dictionary<int, int> idsAndQuantities = _sessionData.GetCartData();
+            string carIdsString = IdsAndQuantitiesToString(idsAndQuantities);
+            List<Car> selectedCars = _context.GetCarsFromIdsString(carIdsString);
+            List<StorageItem> storageItems = _context.StorageItems.ToList();
+
+            foreach (var car in selectedCars)
+            {
+                StorageItem? storageItem = storageItems.FirstOrDefault(storageItem => storageItem.CarId == car.Id);
+
+                if (storageItem != null)
+                {
+                    if (_context.Entry(storageItem).State == EntityState.Unchanged)
+                    {
+                        _context.Entry(storageItem).State = EntityState.Detached;
+                    }
+
+                    storageItem.Count -= 1;
+
+                    storageItems[storageItem.Id - 1] = storageItem;
+                }
+            }
+
+            foreach (var storageItem in storageItems)
+            {
+                _context.Update(storageItem);
+                _context.SaveChanges();
+            }
+        }
+
+        private void UpdateSoldCarsCount()
+        {
+            List<Car> cars = _context.GetCarList();
+            Dictionary<int, int> idsAndQuantities = _sessionData.GetCartData();
+            string carIdsString = IdsAndQuantitiesToString(idsAndQuantities);
+            List<Car> selectedCars = _context.GetCarsFromIdsString(carIdsString);
+
+            foreach (var car in selectedCars)
+            {
+                car.SoldCount++;
+
+                _context.Update(car);
+                _context.SaveChanges();
+            }
         }
     }
 }

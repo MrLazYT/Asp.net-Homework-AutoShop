@@ -17,7 +17,9 @@ namespace DataAccess.EntityInitializers
 					Color = "White",
 					Year = 2020,
 					CategoryId = 1,
-					Price = 28007
+					StorageItemId = 1,
+					Price = 28007,
+					SoldCount = 287,
                 },
 				new Car()
 				{
@@ -27,8 +29,10 @@ namespace DataAccess.EntityInitializers
 					Color = "Blue",
 					Year = 2019,
 					CategoryId = 1,
-					Price = 20000
-				},
+                    StorageItemId = 2,
+                    Price = 20000,
+                    SoldCount = 512,
+                },
 				new Car()
 				{
 					Id = 3,
@@ -37,8 +41,10 @@ namespace DataAccess.EntityInitializers
 					Color = "Black",
 					Year = 2021,
 					CategoryId = 2,
-					Price = 32999
-				},
+                    StorageItemId = 3,
+                    Price = 32999,
+                    SoldCount = 297,
+                },
 				new Car()
 				{
 					Id = 4,
@@ -47,8 +53,10 @@ namespace DataAccess.EntityInitializers
 					Color = "Red",
 					Year = 2022,
 					CategoryId = 2,
-					Price = 52990
-				},
+                    StorageItemId = 4,
+                    Price = 52990,
+                    SoldCount = 263,
+                },
 				new Car()
 				{
 					Id = 5,
@@ -57,8 +65,10 @@ namespace DataAccess.EntityInitializers
 					Color = "Silver",
 					Year = 2018,
 					CategoryId = 3,
-					Price = 9999
-				},
+                    StorageItemId = 5,
+                    Price = 9999,
+                    SoldCount = 823,
+                },
 				new Car()
 				{
 					Id = 6,
@@ -67,8 +77,10 @@ namespace DataAccess.EntityInitializers
 					Color = "Gray",
 					Year = 2017,
 					CategoryId = 3,
-					Price = 9300
-				},
+                    StorageItemId = 6,
+                    Price = 9300,
+                    SoldCount = 768,
+                },
 				new Car()
 				{
 					Id = 7,
@@ -77,8 +89,10 @@ namespace DataAccess.EntityInitializers
 					Color = "Green",
 					Year = 2021,
 					CategoryId = 4,
-					Price = 27999
-				},
+                    StorageItemId = 7,
+                    Price = 27999,
+                    SoldCount = 324,
+                },
 				new Car()
 				{
 					Id = 8,
@@ -87,8 +101,10 @@ namespace DataAccess.EntityInitializers
 					Color = "Yellow",
 					Year = 2020,
 					CategoryId = 4,
-					Price = 65000
-				},
+                    StorageItemId = 8,
+                    Price = 65000,
+                    SoldCount = 234,
+                },
 				new Car()
 				{
 					Id = 9,
@@ -97,8 +113,10 @@ namespace DataAccess.EntityInitializers
 					Color = "White",
 					Year = 2019,
 					CategoryId = 5,
-					Price = 23000
-				},
+                    StorageItemId = 9,
+                    Price = 23000,
+                    SoldCount = 438,
+                },
 				new Car()
 				{
 					Id = 10,
@@ -107,8 +125,10 @@ namespace DataAccess.EntityInitializers
 					Color = "Black",
 					Year = 2020,
 					CategoryId = 5,
-					Price = 17100
-				},
+                    StorageItemId = 10,
+                    Price = 17100,
+                    SoldCount = 642,
+                },
 			});
 		}
 	}

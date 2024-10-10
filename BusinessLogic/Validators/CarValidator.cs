@@ -1,9 +1,9 @@
-﻿using DataAccess.Entities;
+﻿using BusinessLogic.DTOs;
 using FluentValidation;
 
-namespace AutoShop.Validators
+namespace BusinessLogic.Validators
 {
-    public class CarValidator : AbstractValidator<Car>
+    public class CarValidator : AbstractValidator<CarDto>
     {
         public CarValidator()
         {
@@ -41,15 +41,6 @@ namespace AutoShop.Validators
             RuleFor(car => car.Price)
                 .GreaterThan(1)
                 .LessThan(1000000);
-
-            RuleFor(car => car.ImagePath)
-                .NotNull()
-                .NotEmpty()
-                .WithMessage("{PropertyName} is required.");
-
-            RuleFor(car => car.ImagePath)
-                .Must(IsCorrectURI)
-                .WithMessage("{PropertyName} is incorrect.");
         }
 
         private static bool IsCorrectURI(string uri)

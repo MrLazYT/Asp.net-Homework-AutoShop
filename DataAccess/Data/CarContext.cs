@@ -14,10 +14,12 @@ namespace DataAccess.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<StorageItem> StorageItems { get; set; }
 
         public CarContext(DbContextOptions<CarContext> options) : base(options)
 		{
-			Database.EnsureCreated();
+            // ОК :)
+			//Database.EnsureCreated();
 		}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,29 +28,13 @@ namespace DataAccess.Data
 
             EntityTypeBuilder<Category> categoryBuilder = modelBuilder.Entity<Category>();
             EntityTypeBuilder<Car> carBuilder = modelBuilder.Entity<Car>();
+            EntityTypeBuilder<StorageItem> storageItemBuilder = modelBuilder.Entity<StorageItem>();
 
             CategoryInitializer.SeedData(categoryBuilder);
             CarInitializer.SeedData(carBuilder);
+            StorageItemInitializer.SeedData(storageItemBuilder);
 
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CarContext).Assembly);
-        }
-
-        public void AddCar(Car car)
-        {
-            Cars.Add(car);
-            SaveChanges();
-        }
-
-        public void UpdateCar(Car car)
-        {
-            Cars.Update(car);
-            SaveChanges();
-        }
-
-        public void RemoveCar(Car car)
-        {
-            Cars.Remove(car);
-            SaveChanges();
         }
 
         public void AddOrder(Order order)
@@ -57,17 +43,10 @@ namespace DataAccess.Data
             SaveChanges();
         }
 
-        public Car GetCarById(int id)
-        {
-            List<Car> cars = GetCarList();
-            Car car = cars.FirstOrDefault(car => car.Id == id)!;
-
-            return car;
-        }
-
         public List<Car> GetCarList()
 		{
-			IIncludableQueryable<Car, Category> cars = IncludeCategories(Cars);
+            IQueryable<Car> carsAsNoTracking = Cars.AsNoTracking();
+			IQueryable<Car> cars = IncludeCategories(carsAsNoTracking).AsNoTracking();
 
 			return cars.ToList();
 		}
@@ -101,7 +80,9 @@ namespace DataAccess.Data
 		{
 			if (categoryId != 0)
 			{
-				IQueryable<Car> cars = Cars.Where(car => car.CategoryId == categoryId);
+				IQueryable<Car> cars = Cars
+                    .Where(car => car.CategoryId == categoryId)
+                    .AsNoTracking();
 
 				return cars.ToList();
 			}

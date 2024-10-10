@@ -1,34 +1,29 @@
 ﻿using AutoShop.Models;
-using AutoShop.Services;
-using DataAccess.Data;
-using DataAccess.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
+using BusinessLogic.DTOs;
+using BusinessLogic.Services;
 
 namespace AutoShop.Helpers
 {
     public class CarData
     {
-        private readonly CarContext _context;
+        private readonly CarService _carService;
         private readonly SessionData _sessionData;
 
-        public CarData(CarContext context, SessionData sessionData)
+        public CarData(CarService carService, SessionData sessionData)
         {
-            _context = context;
+            _carService = carService;
             _sessionData = sessionData;
         }
 
         public List<ProductCartViewModel> GetProductCartViewModels()
         {
-            DbSet<Car> cars = _context.Cars;
-            IIncludableQueryable<Car, Category> carsWithCat = cars.Include(c => c.Category)!;
-
-            List<ProductCartViewModel> productCartViewModels = GetProductCartViewModels(carsWithCat);
+            List<CarDto> cars = _carService.GetAll();
+            List<ProductCartViewModel> productCartViewModels = GetProductCartViewModels(cars);
 
             return productCartViewModels;
         }
 
-        public List<ProductCartViewModel> GetProductCartViewModels(IEnumerable<Car> cars)
+        public List<ProductCartViewModel> GetProductCartViewModels(IEnumerable<CarDto> cars)
         {
             IEnumerable<ProductCartViewModel> productCartViewModels = cars.Select(c => new ProductCartViewModel()
             {
@@ -51,9 +46,9 @@ namespace AutoShop.Helpers
             return idsAndQuantities!.ContainsKey(id);
         }
 
-        public List<Car> GetCars(List<ProductCartViewModel> productCartViewModels)
+        public List<CarDto> GetCars(List<ProductCartViewModel> productCartViewModels)
         {
-            IEnumerable<Car> cars = productCartViewModels.Select(viewModel => new Car()
+            IEnumerable<CarDto> cars = productCartViewModels.Select(viewModel => new CarDto()
             {
                 Id = viewModel.Car.Id,
                 ImagePath = viewModel.Car.ImagePath,
@@ -61,7 +56,7 @@ namespace AutoShop.Helpers
                 Color = viewModel.Car.Color,
                 Year = viewModel.Car.Year,
                 CategoryId = viewModel.Car.CategoryId,
-                Category = viewModel.Car.Category,
+                CategoryName = viewModel.Car.CategoryName,
                 Price = viewModel.Car.Price,
             });
 

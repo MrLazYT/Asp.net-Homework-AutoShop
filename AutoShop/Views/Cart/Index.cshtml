@@ -4,7 +4,7 @@
     Dictionary<int, int> idsAndQuantities = Context.Session.GetObject<Dictionary<int, int>>("cart");
 }
 
-@model List<Car>
+@model List<CarDto>
 
 <div class="container w-50">
     @if (Model != null && Model.Count != 0)
@@ -23,23 +23,37 @@
             </thead>
 
             <tbody>
-                @foreach(Car car in Model)
+                @foreach(CarDto car in Model)
                 {
                     <tr>
                         <th>@car.Id</th>
                         <td><img style="width: 150px;" src="@car.ImagePath" /></td>
                         <td>@car.Model</td>
                         <td>@car.Year</td>
-                        <td>@car.Category</td>
-                        <td>@car.Price</td>
+                        <td>@car.CategoryName</td>
+                        <td>@(car.Price * @idsAndQuantities[car.Id])</td>
                         <td>
                             <div class="container d-flex">
                                 <div class="btn-group">
-                                    <a class="btn btn-primary" asp-controller="Cart" asp-action="MinusProductQuantity" asp-route-id="@car.Id">-</a>
+                                    @if (idsAndQuantities[car.Id] == 1)
+                                    {
+                                        <a class="btn btn-primary disabled" asp-controller="Cart" asp-action="MinusProductQuantity" asp-route-id="@car.Id">-</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-primary" asp-controller="Cart" asp-action="MinusProductQuantity" asp-route-id="@car.Id">-</a>
+                                    }
                                     
                                     <span class="btn btn-light disabled">@idsAndQuantities[car.Id]</span>
                                     
-                                    <a class="btn btn-primary" asp-controller="Cart" asp-action="PlusProductQuantity" asp-route-id="@car.Id">+</a>
+                                    @if (idsAndQuantities[car.Id] == car.StorageCount)
+                                    {
+                                        <a class="btn btn-primary disabled" asp-controller="Cart" asp-action="PlusProductQuantity" asp-route-id="@car.Id">+</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-primary" asp-controller="Cart" asp-action="PlusProductQuantity" asp-route-id="@car.Id">+</a>
+                                    }
                                 </div>
                                 
                                 <a class="btn btn-white m-1" asp-controller="Cart" asp-action="Remove" asp-route-id="@car.Id"><i class="fa-solid fa-trash text-danger"></i></a>

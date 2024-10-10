@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace DataAccess.Entities
+﻿namespace DataAccess.Entities
 {
 	public class Car
 	{
@@ -10,16 +8,16 @@ namespace DataAccess.Entities
 		public string Color { get; set; } = default!;
 		public int Year { get; set; }
 		public int CategoryId { get; set; }
+		public int StorageItemId { get; set; }
 		public decimal Price { get; set; }
+		public int SoldCount { get; set; }
 
 		public Category? Category { get; set; }
-		
-		public static PropertyInfo GetPropertyInfo(string propertyName)
-		{
-			Type objectType = typeof(Car);
-            PropertyInfo property = objectType.GetProperty(propertyName)!;
+		public StorageItem? StorageItem { get; set; }
 
-			return property;
-		}
-	}
+        public override string ToString()
+        {
+			return Model;
+        }
+    }
 }
