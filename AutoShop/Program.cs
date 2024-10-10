@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using DataAccess.Entities;
 using AutoShop.Helpers;
 using BusinessLogic.Services;
-using BusinessLogic.Helper;
+using BusinessLogic.Helpers;
 using BusinessLogic.Interfaces;
 using BusinessLogic.Sevices;
 
@@ -46,9 +46,12 @@ namespace AutoShop
             builder.Services.AddScoped<CarService>();
             builder.Services.AddScoped<CategoryService>();
             builder.Services.AddScoped<CartService>();
-			builder.Services.AddScoped<IFileService, FileService>();
+			builder.Services.AddScoped<OrderService>();
 
-			builder.Services.AddAutoMapper(typeof(MapperProfile));
+			builder.Services.AddScoped<IFileService, FileService>();
+            builder.Services.AddScoped<IMailService, MailService>();
+
+            builder.Services.AddAutoMapper(typeof(MapperProfile));
 
 			WebApplication app = builder.Build();
 

@@ -2,7 +2,7 @@
 using BusinessLogic.DTOs;
 using DataAccess.Entities;
 
-namespace BusinessLogic.Helper
+namespace BusinessLogic.Helpers
 {
     public class MapperProfile : Profile
     {
@@ -15,6 +15,11 @@ namespace BusinessLogic.Helper
             CreateMap<CarDto, Car>();
 
             CreateMap<Category, CategoryDto>().ReverseMap();
+
+            CreateMap<Order, OrderDto>()
+                .ForMember(orderDto => orderDto.Cars, opt => opt.Ignore());
+
+            CreateMap<OrderDto, Order>();
         }
     }
 }

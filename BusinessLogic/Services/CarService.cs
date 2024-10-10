@@ -79,7 +79,7 @@ namespace BusinessLogic.Services
             {
                 if (carDto.Image != null)
                 {
-                    carDto.ImagePath = _fileService.EditProductImage(carDto.ImagePath, carDto.Image).Result;
+                    carDto.ImagePath = _fileService.EditProductImage(carDto.ImagePath!, carDto.Image).Result;
                 }
 
                 Car car = _mapper.Map<Car>(carDto);
