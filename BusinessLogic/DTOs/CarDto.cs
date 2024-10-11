@@ -8,7 +8,7 @@ namespace BusinessLogic.DTOs
     {
         public int Id { get; set; }
         public string? ImagePath { get; set; }
-        public IFormFile? Image { get; set; }
+        public IFormFile? Image { get; set; } = null;
         public string Model { get; set; } = default!;
         public string Color { get; set; } = default!;
         public int Year { get; set; }

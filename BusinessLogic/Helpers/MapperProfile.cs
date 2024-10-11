@@ -20,6 +20,8 @@ namespace BusinessLogic.Helpers
                 .ForMember(orderDto => orderDto.Cars, opt => opt.Ignore());
 
             CreateMap<OrderDto, Order>();
+
+            CreateMap<CarDto, SwaggerCarDto>().ReverseMap();
         }
     }
 }
