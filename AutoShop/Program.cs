@@ -37,6 +37,8 @@ namespace AutoShop
 			builder.Services.AddDistributedMemoryCache();
 			builder.Services.AddSession();
 
+			builder.Services.AddAuthentication();
+
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
 
@@ -76,6 +78,7 @@ namespace AutoShop
 
 			app.UseRouting();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 			app.UseSession();
 

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BusinessLogic.DTOs;
 using BusinessLogic.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,6 +23,7 @@ namespace AutoShopWebAPI.Controllers
         }
 
         // GET: api/<CarController>
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
         public IActionResult Get()
         {
@@ -30,6 +33,7 @@ namespace AutoShopWebAPI.Controllers
         }
 
         // GET api/<CarController>/5
+        [Authorize]
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
@@ -39,6 +43,7 @@ namespace AutoShopWebAPI.Controllers
         }
 
         // POST api/<CarController>
+        [Authorize]
         [HttpPost]
         public IActionResult Post([FromBody] SwaggerCarDto swaggerCarDto)
         {
@@ -50,6 +55,7 @@ namespace AutoShopWebAPI.Controllers
         }
 
         // PUT api/<CarController>/5
+        [Authorize]
         [HttpPut("{id}")]
         public IActionResult Put([FromBody] SwaggerCarDto swaggerCarDto)
         {
@@ -61,6 +67,7 @@ namespace AutoShopWebAPI.Controllers
         }
 
         // DELETE api/<CarController>/5
+        [Authorize]
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

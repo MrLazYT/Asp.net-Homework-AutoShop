@@ -8,6 +8,7 @@ namespace AutoShop.Helpers
         User,
         Admin,
     }
+
     public static class RoleSeeder
     {
         public static async Task SeedRoles(this IServiceProvider serviceProvider)
